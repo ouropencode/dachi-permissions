@@ -1,0 +1,12 @@
+{
+	"name": "lemondigits/dachi-permissions",
+	"version": "3.0.0",
+	"autoload": {
+		"psr-4": {
+			"Dachi\\Permissions\\": "src/"
+		}
+	},
+	"require": {
+        "lemondigits/dachi": "^3.0"
+	}
+}

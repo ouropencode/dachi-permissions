@@ -1,0 +1,31 @@
+<div class="authentication">
+
+	<a href="http://{{ domain }}" class="logo"><img src="{{ assetsURL }}/static/images/logo.png"></a>
+
+	<form action='auth/register/create' method='post' class='ajax'>
+		<h1>Register</h1>
+		{% if auth_id == "username" %}
+			<label for="username">username</label>
+			<input type="text" class="form-control" name="username" value="" placeholder="Username">
+		{% endif %}
+		<label for="email">email</label>
+		<input type="text" name="email" class="form-control" value="" placeholder="Email">
+		<label for="first_name">first name</label>
+		<input type="text" name="first_name" class="form-control" value="" placeholder="First Name">
+		<label for="last_name">last name</label>
+		<input type="text" name="last_name" class="form-control" value="" placeholder="Last Name">
+		<label for="password">password</label>
+		<input type="password" name='password' class="form-control" placeholder="Password">
+		<label for="cpassword">cpassword</label>
+		<input type="password" name='cpassword' class="form-control" placeholder="Confirm Password">
+		{% if mailing_list == true %}
+		<input type="checkbox" name="emailSubscribe" value="true" checked> Subscribe to our mailing list for the latest offers, news and more.
+		{% endif %}
+		<br />
+		<button type="submit" value="Register">Register</button>
+		<br />
+		<a href="auth/login" class="ajax">Sign In</a>
+		<br />
+		<a href="auth/reset-password" class="ajax">Forgot your password?</a>
+	</form>
+</div>

@@ -1,0 +1,27 @@
+<div class="authentication">
+
+	<a href="http://{{ domain }}" class="logo"><img src="{{ assetsURL }}/static/images/logo.png"></a>
+
+	<form action='auth/login/check' method='post' class='ajax'>
+		<h1>Login</h1>
+		{% if auth_id == "email" %}
+			<label for="email">email</label>
+			<input type="text" class="form-control" name="email" value="" placeholder="Email">
+		{% elseif auth_id == "username" %}
+			<label for="username">username</label>
+			<input type="text" class="form-control" name="username" value="" placeholder="Username">
+		{% else %}
+			<strong>login is currently deactivated</strong>
+		{% endif %}
+		<label for="passord">password</label>
+		<input type="password" class="form-control" name="password" placeholder="Password">
+		<br />
+		<button type="submit" value="Sign In">Sign In</button>
+		{% if register_enabled %}
+			<br />
+			<a href="auth/register" class="ajax">Register</a>
+		{% endif %}
+		<br />
+		<a href="auth/reset-password" class="ajax">Forgot your password?</a>
+	</form>
+</div>
