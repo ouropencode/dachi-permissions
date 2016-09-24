@@ -1,5 +1,5 @@
 {
-	"name": "lemondigits/dachi-permissions",
+	"name": "ouropencode/dachi-permissions",
 	"version": "3.0.0",
 	"autoload": {
 		"psr-4": {
@@ -7,6 +7,6 @@
 		}
 	},
 	"require": {
-        "lemondigits/dachi": "^3.0"
+        "ouropencode/dachi": "^3.0"
 	}
 }
