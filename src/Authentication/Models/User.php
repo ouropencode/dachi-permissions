@@ -1,14 +1,14 @@
 <?php
-namespace Dachi\Permissions\Authentication;
+namespace Dachi\Permissions\Authentication\Models;
 
 use Dachi\Core\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Entity(repositoryClass="RepositoryUser")
+ * @Entity(repositoryClass="UserRepository")
  * @Table(name="authentication_users")
  */
-class ModelUser extends Model {
+class User extends Model {
 	/**
 	 * @Id @Column(type="integer") @GeneratedValue
 	 */
@@ -23,24 +23,24 @@ class ModelUser extends Model {
 	 * @Column(type="string")
 	 */
 	protected $last_name;
-	
+
 	/**
 	 * @Column(type="string")
 	 */
 	protected $username;
-	
+
 	/**
 	 * @Column(type="string")
 	 */
 	protected $password;
-	
+
 	/**
 	 * @Column(type="string")
 	 */
 	protected $email;
-	
+
 	/**
-	 * @ManyToOne(targetEntity="ModelRole", fetch="EAGER")
+	 * @ManyToOne(targetEntity="Role", fetch="EAGER")
 	 */
 	private $role;
 

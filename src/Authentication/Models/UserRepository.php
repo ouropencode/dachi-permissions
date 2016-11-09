@@ -1,11 +1,11 @@
 <?php
-namespace Dachi\Permissions\Authentication;
+namespace Dachi\Permissions\Authentication\Models;
 
 use Dachi\Core\Database;
 use Dachi\Core\Configuration;
 use Doctrine\ORM\EntityRepository;
 
-class RepositoryUser extends EntityRepository {
+class UserRepository extends EntityRepository {
 
 	public function getDataTable($table) {
 		$mapping = array(
@@ -21,7 +21,7 @@ class RepositoryUser extends EntityRepository {
 
 		$selectQuery = Database::createQueryBuilder()
 			->select('u')
-			->from('Authentication:ModelUser', 'u')
+			->from('Authentication:User', 'u')
 			->setFirstResult($table->getStartResult())
 			->setMaxResults($table->getMaxResults());
 
@@ -31,7 +31,7 @@ class RepositoryUser extends EntityRepository {
 
 		$countQuery = Database::createQueryBuilder()
 			->select('COUNT(u.id)')
-			->from('Authentication:ModelUser', 'u');
+			->from('Authentication:User', 'u');
 
 		$where = $table->getWhere($mapping);
 		foreach($where as $filter) {
@@ -54,7 +54,7 @@ class RepositoryUser extends EntityRepository {
 		}
 
 		$total_filtered = $countQuery->getQuery()->getSingleScalarResult();
-		$total = Database::createQuery("SELECT COUNT(u.id) FROM Authentication:ModelUser u")->getSingleScalarResult();
+		$total = Database::createQuery("SELECT COUNT(u.id) FROM Authentication:User u")->getSingleScalarResult();
 
 		return array(
 			"total"          => $total,

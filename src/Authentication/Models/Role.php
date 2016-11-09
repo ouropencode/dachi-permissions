@@ -1,14 +1,14 @@
 <?php
-namespace Dachi\Permissions\Authentication;
+namespace Dachi\Permissions\Authentication\Models;
 
 use Dachi\Core\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Entity(repositoryClass="RepositoryRole")
+ * @Entity(repositoryClass="RoleRepository")
  * @Table(name="authentication_roles")
  */
-class ModelRole extends Model {
+class Role extends Model {
 	/**
 	 * @Id @Column(type="integer") @GeneratedValue
 	 */
@@ -25,7 +25,7 @@ class ModelRole extends Model {
 	protected $created;
 
 	/**
-	 * @ManyToMany(targetEntity="ModelPermission", fetch="EAGER")
+	 * @ManyToMany(targetEntity="Permission", fetch="EAGER")
 	 * @JoinTable(
 	 *     name               = "authentication_roles_permissions",
 	 *     joinColumns        = {@JoinColumn(name="role_id", referencedColumnName="id")},
@@ -65,5 +65,5 @@ class ModelRole extends Model {
 	public function getPermissions() {
 		return $this->permissions;
 	}
-	
+
 }

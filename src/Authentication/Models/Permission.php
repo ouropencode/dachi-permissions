@@ -1,5 +1,5 @@
 <?php
-namespace Dachi\Permissions\Authentication;
+namespace Dachi\Permissions\Authentication\Models;
 
 use Dachi\Core\Model;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @Table(name="authentication_permissions")
  */
-class ModelPermission extends Model {
+class Permission extends Model {
 
 	/**
 	 * @Id @Column(type="string")

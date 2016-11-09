@@ -13,16 +13,16 @@ use Dachi\Permissions\Permissions;
  * The ControllerRegister class is responsable for new user registration
  *
  * This Controller provides routes for:
- * 
+ *
  *     /auth/register
  *     /auth/register/create
  *
  * @version   2.0.0
  * @since     2.0.0
  * @license   LICENCE.md
- * @author    LemonDigits.com <devteam@lemondigits.com>
+ * @author    $ourOpenCode
  */
-class ControllerRegister extends Controller {
+class Register extends Controller {
 
 	private function handle_redirect_uris() {
 		$dachi_redirect_uri = Request::getArgument("dachi_redirect_uri", false);
@@ -39,7 +39,7 @@ class ControllerRegister extends Controller {
 	 */
 	public function auth_register() {
 		$this->handle_redirect_uris();
-		
+
 		if(Permissions::getActiveUser())
 			return Template::redirect("/auth/login/check");
 
@@ -58,8 +58,8 @@ class ControllerRegister extends Controller {
 	public function auth_register_create() {
 		if(Configuration::get("authentication.register-enabled", true) == false)
 			return Template::redirect("/auth");
-		
-		$existing = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+
+		$existing = Database::getRepository('Authentication:User')->findOneBy(array(
 			"email" => Request::getArgument("email")
 		));
 
@@ -70,7 +70,7 @@ class ControllerRegister extends Controller {
 			return Request::setResponseCode("error", "Passwords do not match");
 
 		$user = new ModelUser();
-		$user->setRole(Database::getReference("Authentication:ModelRole", 1));
+		$user->setRole(Database::getReference("Authentication:Role", 1));
 		$user->setFirstName(Request::getArgument("first_name"));
 		$user->setLastName(Request::getArgument("last_name"));
 
@@ -117,6 +117,6 @@ class ControllerRegister extends Controller {
 		$redirect = "/";
 		$redirect = Request::getSession("dachi_redirect_uri", $redirect);
 		$redirect = Request::getArgument("dachi_redirect_uri", $redirect);
-		Template::redirect($redirect);		
+		Template::redirect($redirect);
 	}
 }

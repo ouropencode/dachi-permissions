@@ -26,14 +26,14 @@ class Permissions {
 		if(Request::getSession("dachi_authenticated", false) == false)
 			return;
 
-		$active_user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+		$active_user = Database::getRepository('Authentication:User')->findOneBy(array(
 			"id" => Request::getSession("dachi_authenticated", false)
 		));
 		if(!$active_user) return false;
 
 		$role = $active_user->getRole();
 		if(!$role) return false;
-		
+
 		foreach($role->getPermissions() as $perm)
 			self::$active_user_permissions[$perm->getBit()] = true;
 
@@ -61,8 +61,8 @@ class Permissions {
 	public static function getActiveUser() {
 		if(Request::getSession("dachi_authenticated", false) == false)
 			return false;
-		
-		return Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+
+		return Database::getRepository('Authentication:User')->findOneBy(array(
 			"id" => Request::getSession("dachi_authenticated", false)
 		));
 	}
@@ -91,7 +91,7 @@ class Permissions {
 
 		if(isset(self::$active_user_permissions[$bit]) && self::$active_user_permissions[$bit] === true)
 			return true;
-		
+
 		return self::fail();
 	}
 
@@ -113,14 +113,14 @@ class Permissions {
 	}
 
 	public static function register($bit, $name = null, $description = null) {
-		$permission = Database::getRepository('Authentication:ModelPermission')->findOneBy(array(
+		$permission = Database::getRepository('Authentication:Permission')->findOneBy(array(
 			"bit" => $bit
 		));
 
 		$newPermission = false;
 		if(!$permission) {
 			$newPermission = true;
-			$permission = new Authentication\ModelPermission();
+			$permission = new Authentication\Models\Permission();
 		}
 
 		$permission->setBit($bit);
@@ -129,7 +129,7 @@ class Permissions {
 
 		if($newPermission == true)
 			Database::persist($permission);
-		
+
 		Database::flush();
 	}
 }

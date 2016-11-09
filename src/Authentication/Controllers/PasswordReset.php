@@ -1,5 +1,5 @@
 <?php
-namespace Dachi\Permissions\Authentication;
+namespace Dachi\Permissions\Authentication\Controllers;
 
 use Dachi\Core\Controller;
 use Dachi\Core\Configuration;
@@ -8,21 +8,21 @@ use Dachi\Core\Template;
 use Dachi\Core\Database;
 
 /**
- * The ControllerPasswordReset class is responsable for managing password resets
+ * The PasswordReset class is responsable for managing password resets
  *
  * This Controller provides routes for:
- * 
+ *
  *     /auth/reset-password
  *     /auth/reset-password/send
  *     /auth/reset-password/:id
  *     /auth/reset-password/:id/save
  *
- * @version   2.0.0
+ * @version   4.0.0
  * @since     2.0.0
  * @license   LICENCE.md
- * @author    LemonDigits.com <devteam@lemondigits.com>
+ * @author    $ourOpenCode
  */
-class ControllerPasswordReset extends Controller {
+class PasswordReset extends Controller {
 
 	/**
 	 * @route-url /auth/reset-password
@@ -37,18 +37,18 @@ class ControllerPasswordReset extends Controller {
 	 * @route-render /auth/login
 	 */
 	public function auth_reset_password_send() {
-		$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+		$user = Database::getRepository('Authentication:User')->findOneBy(array(
 			"email" => Request::getArgument("email")
 		));
 
 		if($user) {
 			if(!$user->getEmail())
 				throw new \Exception("Can't reset password of user with no email");
-			
+
 			$key = hash('sha256', mt_rand() * time());
 			$user->setResetKey(password_hash($key, PASSWORD_BCRYPT));
 			Database::flush();
-			
+
 			\Dachi\Helpers\EMail::send(array(
 				"email"   => $user->getEmail(),
 				"name"    => $user->getFirstName() . " " . $user->getLastName(),
@@ -81,7 +81,7 @@ class ControllerPasswordReset extends Controller {
 	 * @route-render /auth/reset-password/:id
 	 */
 	public function auth_reset_password_claim_save() {
-		$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+		$user = Database::getRepository('Authentication:User')->findOneBy(array(
 			"email" => Request::getArgument("email")
 		));
 

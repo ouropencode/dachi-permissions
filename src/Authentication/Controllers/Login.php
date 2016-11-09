@@ -1,5 +1,5 @@
 <?php
-namespace Dachi\Permissions\Authentication;
+namespace Dachi\Permissions\Authentication\Controllers;
 
 use Dachi\Core\Controller;
 use Dachi\Core\Request;
@@ -13,17 +13,17 @@ use Dachi\Permissions\Permissions;
  * The ControllerLogin class is responsable for logging in and confirming authentication of users
  *
  * This Controller provides routes for:
- * 
+ *
  *     /auth/
  *     /auth/login
  *     /auth/login/check
  *
- * @version   2.0.0
+ * @version   4.0.0
  * @since     2.0.0
  * @license   LICENCE.md
- * @author    LemonDigits.com <devteam@lemondigits.com>
+ * @author    $ourOpenCode
  */
-class ControllerLogin extends Controller {
+class Login extends Controller {
 
 	public function __setup() {
 		\Dachi\Permissions\Permissions::register("global.root-user",  "Global -> Root User",  "This user is a global root user. This should only be assigned to developers. [DANGEROUS]");
@@ -53,7 +53,7 @@ class ControllerLogin extends Controller {
 	public function auth_logout() {
 		$this->handle_redirect_uris();
 		Request::setSession("dachi_authenticated", false);
-		
+
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Template::display("@Authentication/login", "page_content");
 	}
@@ -65,7 +65,7 @@ class ControllerLogin extends Controller {
 		$this->handle_redirect_uris();
 		if(Permissions::getActiveUser())
 			return Template::redirect("/auth/login/check");
-		
+
 		$loginLockout  = Request::getSession("dachi_login_lockout_till", false);
 
 		if ($loginLockout !== false && $loginLockout < time())
@@ -91,11 +91,11 @@ class ControllerLogin extends Controller {
 
 		$identifier = Configuration::get("authentication.identifier", "email");
 		if($identifier == "email") {
-			$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+			$user = Database::getRepository('Authentication:User')->findOneBy(array(
 				"email" => Request::getArgument("email")
 			));
 		} else if($identifier == "username") {
-			$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+			$user = Database::getRepository('Authentication:User')->findOneBy(array(
 				"username" => Request::getArgument("username")
 			));
 		} else {
@@ -112,7 +112,7 @@ class ControllerLogin extends Controller {
 			Database::flush();
 
 			$this->perform_redirect();
-			
+
 			Request::setResponseCode("success", "Logged in successfully.");
 		} else {
 			if ($loginAttempts > 15) {
@@ -142,7 +142,7 @@ class ControllerLogin extends Controller {
 		$redirect = Request::getSession("dachi_redirect_uri", $redirect);
 		$redirect = Request::getArgument("dachi_redirect_uri", $redirect);
 		Request::setSession("dachi_redirect_uri", false);
-		Template::redirect($redirect);		
+		Template::redirect($redirect);
 	}
 }
 
