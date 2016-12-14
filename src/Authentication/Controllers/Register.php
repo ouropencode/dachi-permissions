@@ -63,8 +63,17 @@ class Register extends Controller {
 			"email" => Request::getArgument("email")
 		));
 
-		if($existing && $existing->getId())
+		if($existing)
 			return Request::setResponseCode("error", "E-Mail address is already in use");
+
+		if(Configuration::get("authentication.identifier", "email") == "username" || Configuration::get("authentication.identifier", "email") == "password") {
+			$existing = Database::getRepository('Authentication:User')->findOneBy(array(
+				"username" => Request::getArgument("username")
+			));
+
+			if($existing)
+				return Request::setResponseCode("error", "Username is already in use");
+		}
 
 		if(Request::getArgument("password") !== Request::getArgument("cpassword"))
 			return Request::setResponseCode("error", "Passwords do not match");

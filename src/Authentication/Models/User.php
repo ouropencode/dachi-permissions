@@ -25,7 +25,7 @@ class User extends Model {
 	protected $last_name;
 
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $username;
 
@@ -35,7 +35,7 @@ class User extends Model {
 	protected $password;
 
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $email;
 
