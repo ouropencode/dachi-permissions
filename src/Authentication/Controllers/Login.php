@@ -98,6 +98,15 @@ class Login extends Controller {
 			$user = Database::getRepository('Authentication:User')->findOneBy(array(
 				"username" => Request::getArgument("username")
 			));
+		} else if($identifier == "both") {
+			$user = Database::getRepository('Authentication:User')->findOneBy(array(
+				"email" => Request::getArgument("email")
+			));
+			if($user == null) {
+				$user = Database::getRepository('Authentication:User')->findOneBy(array(
+					"username" => Request::getArgument("username")
+				));
+			}
 		} else {
 			throw new \Exception("Invalid authentication identifier set in config.");
 		}

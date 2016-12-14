@@ -1,5 +1,5 @@
 <?php
-namespace Dachi\Permissions\Authentication;
+namespace Dachi\Permissions\Authentication\Controllers;
 
 use Dachi\Core\Controller;
 use Dachi\Core\Request;
@@ -69,7 +69,7 @@ class Register extends Controller {
 		if(Request::getArgument("password") !== Request::getArgument("cpassword"))
 			return Request::setResponseCode("error", "Passwords do not match");
 
-		$user = new ModelUser();
+		$user = new \Dachi\Permissions\Authentication\Models\User();
 		$user->setRole(Database::getReference("Authentication:Role", 1));
 		$user->setFirstName(Request::getArgument("first_name"));
 		$user->setLastName(Request::getArgument("last_name"));
@@ -79,6 +79,9 @@ class Register extends Controller {
 			$user->setEmail(Request::getArgument("email"));
 			$user->setUsername("");
 		} else if($identifier == "username") {
+			$user->setEmail(Request::getArgument("email"));
+			$user->setUsername(Request::getArgument("username"));
+		} else if($identifier == "both") {
 			$user->setEmail(Request::getArgument("email"));
 			$user->setUsername(Request::getArgument("username"));
 		} else {
