@@ -13,7 +13,7 @@ use Dachi\Permissions\Permissions;
  * The ControllerRegister class is responsable for new user registration
  *
  * This Controller provides routes for:
- * 
+ *
  *     /auth/register
  *     /auth/register/create
  *
@@ -39,7 +39,7 @@ class ControllerRegister extends Controller {
 	 */
 	public function auth_register() {
 		$this->handle_redirect_uris();
-		
+
 		if(Permissions::getActiveUser())
 			return Template::redirect("/auth/login/check");
 
@@ -58,7 +58,7 @@ class ControllerRegister extends Controller {
 	public function auth_register_create() {
 		if(Configuration::get("authentication.register-enabled", true) == false)
 			return Template::redirect("/auth");
-		
+
 		$existing = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
 			"email" => Request::getArgument("email")
 		));
@@ -79,6 +79,9 @@ class ControllerRegister extends Controller {
 			$user->setEmail(Request::getArgument("email"));
 			$user->setUsername("");
 		} else if($identifier == "username") {
+			$user->setEmail(Request::getArgument("email"));
+			$user->setUsername(Request::getArgument("username"));
+		} else if($identifier == "both") {
 			$user->setEmail(Request::getArgument("email"));
 			$user->setUsername(Request::getArgument("username"));
 		} else {
@@ -117,6 +120,6 @@ class ControllerRegister extends Controller {
 		$redirect = "/";
 		$redirect = Request::getSession("dachi_redirect_uri", $redirect);
 		$redirect = Request::getArgument("dachi_redirect_uri", $redirect);
-		Template::redirect($redirect);		
+		Template::redirect($redirect);
 	}
 }

@@ -4,7 +4,7 @@
 
 	<form action='auth/register/create' method='post' class='ajax'>
 		<h1>Register</h1>
-		{% if auth_id == "username" %}
+		{% if auth_id == "username" or auth_id == "both" %}
 			<label for="username">username</label>
 			<input type="text" class="form-control" name="username" value="" placeholder="Username">
 		{% endif %}

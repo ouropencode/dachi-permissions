@@ -10,6 +10,9 @@
 		{% elseif auth_id == "username" %}
 			<label for="username">username</label>
 			<input type="text" class="form-control" name="username" value="" placeholder="Username">
+		{% elseif auth_id == "both" %}
+			<label for="identifier">username/email</label>
+			<input type="text" class="form-control" name="identifier" value="" placeholder="Username/Email">
 		{% else %}
 			<strong>login is currently deactivated</strong>
 		{% endif %}

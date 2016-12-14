@@ -13,7 +13,7 @@ use Dachi\Permissions\Permissions;
  * The ControllerLogin class is responsable for logging in and confirming authentication of users
  *
  * This Controller provides routes for:
- * 
+ *
  *     /auth/
  *     /auth/login
  *     /auth/login/check
@@ -53,7 +53,7 @@ class ControllerLogin extends Controller {
 	public function auth_logout() {
 		$this->handle_redirect_uris();
 		Request::setSession("dachi_authenticated", false);
-		
+
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Template::display("@Authentication/login", "page_content");
 	}
@@ -65,7 +65,7 @@ class ControllerLogin extends Controller {
 		$this->handle_redirect_uris();
 		if(Permissions::getActiveUser())
 			return Template::redirect("/auth/login/check");
-		
+
 		$loginLockout  = Request::getSession("dachi_login_lockout_till", false);
 
 		if ($loginLockout !== false && $loginLockout < time())
@@ -98,6 +98,15 @@ class ControllerLogin extends Controller {
 			$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
 				"username" => Request::getArgument("username")
 			));
+		} else if($identifier == "both") {
+			$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+				"username" => Request::getArgument("identifier")
+			));
+			if($user == null) {
+				$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
+					"email" => Request::getArgument("identifier")
+				));
+			}
 		} else {
 			throw new \Exception("Invalid authentication identifier set in config.");
 		}
@@ -112,7 +121,7 @@ class ControllerLogin extends Controller {
 			Database::flush();
 
 			$this->perform_redirect();
-			
+
 			Request::setResponseCode("success", "Logged in successfully.");
 		} else {
 			if ($loginAttempts > 15) {
@@ -142,7 +151,7 @@ class ControllerLogin extends Controller {
 		$redirect = Request::getSession("dachi_redirect_uri", $redirect);
 		$redirect = Request::getArgument("dachi_redirect_uri", $redirect);
 		Request::setSession("dachi_redirect_uri", false);
-		Template::redirect($redirect);		
+		Template::redirect($redirect);
 	}
 }
 
