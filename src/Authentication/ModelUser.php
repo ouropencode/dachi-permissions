@@ -23,22 +23,22 @@ class ModelUser extends Model {
 	 * @Column(type="string")
 	 */
 	protected $last_name;
-	
+
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $username;
-	
+
 	/**
 	 * @Column(type="string")
 	 */
 	protected $password;
-	
+
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $email;
-	
+
 	/**
 	 * @ManyToOne(targetEntity="ModelRole", fetch="EAGER")
 	 */
