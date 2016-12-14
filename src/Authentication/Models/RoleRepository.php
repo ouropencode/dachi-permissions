@@ -11,6 +11,7 @@ class RoleRepository extends EntityRepository {
 		$mapping = array(
 			"id"          => "r.id",
 			"name"        => "r.name",
+			"entry_point" => "r.entry_point",
 			"created"     => "r.created",
 			"permissions" => "r.permissions"
 		);
@@ -43,6 +44,7 @@ class RoleRepository extends EntityRepository {
 			$records[] = array(
 				"id"          => $d->getId(),
 				"name"        => $d->getName(),
+				"entry_point" => $d->getEntryPoint(),
 				"created"     => $d->getCreated(),
 				"permissions" => $d->getPermissions()
 			);
