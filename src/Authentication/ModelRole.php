@@ -20,6 +20,11 @@ class ModelRole extends Model {
 	protected $name;
 
 	/**
+	 * @Column(type="string")
+	 */
+	protected $entry_point;
+
+	/**
 	 * @Column(type="datetime")
 	 */
 	protected $created;
@@ -50,6 +55,14 @@ class ModelRole extends Model {
 		$this->name = $name;
 	}
 
+	public function getEntryPoint() {
+		return $this->entry_point;
+	}
+
+	public function setEntryPoint($value) {
+		$this->entry_point = $value;
+	}
+
 	public function getCreated() {
 		return $this->created;
 	}
@@ -65,5 +78,5 @@ class ModelRole extends Model {
 	public function getPermissions() {
 		return $this->permissions;
 	}
-	
+
 }

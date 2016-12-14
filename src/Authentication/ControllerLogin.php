@@ -147,7 +147,11 @@ class ControllerLogin extends Controller {
 			}
 		}
 
-		$redirect = "/";
+		$entry_point = "";
+		if(Permissions::getActiveUser() && Permissions::getActiveUser()->getRole())
+			$entry_point = Permissions::getActiveUser()->getRole()->getEntryPoint();
+
+		$redirect = $entry_point ? $entry_point : "/";
 		$redirect = Request::getSession("dachi_redirect_uri", $redirect);
 		$redirect = Request::getArgument("dachi_redirect_uri", $redirect);
 		Request::setSession("dachi_redirect_uri", false);
