@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
+ * @InheritanceType("SINGLE_TABLE")
+ * @DiscriminatorColumn(name="type", type="string")
  * @Table(name="authentication_permissions")
  */
 class ModelPermission extends Model {

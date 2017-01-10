@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity(repositoryClass="RepositoryRole")
+ * @InheritanceType("SINGLE_TABLE")
+ * @DiscriminatorColumn(name="type", type="string")
  * @Table(name="authentication_roles")
  */
 class ModelRole extends Model {
