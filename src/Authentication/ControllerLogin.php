@@ -63,8 +63,7 @@ class ControllerLogin extends Controller {
 	 */
 	public function auth_login() {
 		$this->handle_redirect_uris();
-		if(Permissions::getActiveUser())
-			return Template::redirect("/auth/login/check");
+		Request::setSession("dachi_authenticated", false);
 
 		$loginLockout  = Request::getSession("dachi_login_lockout_till", false);
 

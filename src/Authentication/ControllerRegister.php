@@ -39,6 +39,7 @@ class ControllerRegister extends Controller {
 	 */
 	public function auth_register() {
 		$this->handle_redirect_uris();
+		Request::setSession("dachi_authenticated", false);
 
 		if(Permissions::getActiveUser())
 			return Template::redirect("/auth/login/check");

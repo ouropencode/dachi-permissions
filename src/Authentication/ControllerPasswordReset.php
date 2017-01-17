@@ -11,7 +11,7 @@ use Dachi\Core\Database;
  * The ControllerPasswordReset class is responsable for managing password resets
  *
  * This Controller provides routes for:
- * 
+ *
  *     /auth/reset-password
  *     /auth/reset-password/send
  *     /auth/reset-password/:id
@@ -28,6 +28,7 @@ class ControllerPasswordReset extends Controller {
 	 * @route-url /auth/reset-password
 	 */
 	public function auth_reset_password() {
+		Request::setSession("dachi_authenticated", false);
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Template::display("@Authentication/reset-password", "page_content");
 	}
@@ -44,11 +45,11 @@ class ControllerPasswordReset extends Controller {
 		if($user) {
 			if(!$user->getEmail())
 				throw new \Exception("Can't reset password of user with no email");
-			
+
 			$key = hash('sha256', mt_rand() * time());
 			$user->setResetKey(password_hash($key, PASSWORD_BCRYPT));
 			Database::flush();
-			
+
 			\Dachi\Helpers\EMail::send(array(
 				"email"   => $user->getEmail(),
 				"name"    => $user->getFirstName() . " " . $user->getLastName(),
@@ -72,6 +73,7 @@ class ControllerPasswordReset extends Controller {
 	 * @route-url /auth/reset-password/:id
 	 */
 	public function auth_reset_password_claim() {
+		Request::setSession("dachi_authenticated", false);
 		Request::setData("reset_key", Request::getUri("id", "[0-9a-fA-F]+"));
 		Template::display("@Authentication/reset-password-new-password", "page_content");
 	}
