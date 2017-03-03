@@ -54,6 +54,9 @@ class ControllerLogin extends Controller {
 		$this->handle_redirect_uris();
 		Request::setSession("dachi_authenticated", false);
 
+		session_destroy();
+		session_regenerate_id(true);
+
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Template::display("@Authentication/login", "page_content");
 	}
