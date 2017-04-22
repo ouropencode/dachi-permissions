@@ -2,6 +2,7 @@
 namespace Dachi\Permissions\Authentication;
 
 use Dachi\Core\Controller;
+use Dachi\Core\Kernel;
 use Dachi\Core\Request;
 use Dachi\Core\Template;
 use Dachi\Core\Database;
@@ -75,6 +76,7 @@ class ControllerLogin extends Controller {
 
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Request::setData("register_enabled", Configuration::get("authentication.register-enabled", true));
+		Request::setData("version_string", "<b>env:</b> " . Kernel::getEnvironment() . " - <b>portal:</b> v" . Kernel::getGitHash() . " - <b>dachi:</b> " . Kernel::getVersion());
 		Template::display("@Authentication/login", "page_content");
 	}
 

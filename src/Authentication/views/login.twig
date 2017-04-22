@@ -4,6 +4,9 @@
 
 	<form action='auth/login/check' method='post' class='ajax'>
 		<h1>Login</h1>
+
+		{% if version_string %}<small>{{ version_string }}</small>{% endif %}
+
 		{% if auth_id == "email" %}
 			<label for="email">email</label>
 			<input type="text" class="form-control" name="email" value="" placeholder="Email">
@@ -25,6 +28,6 @@
 			<a href="auth/register" class="ajax">Register</a>
 		{% endif %}
 		<br />
-		<a href="auth/reset-password" class="ajax">Forgot your password?</a>
+		<a href="auth/reset-password" class="ajax">Reset Password</a>
 	</form>
 </div>
