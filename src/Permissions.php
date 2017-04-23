@@ -33,7 +33,7 @@ class Permissions {
 
 		$role = $active_user->getRole();
 		if(!$role) return false;
-		
+
 		foreach($role->getPermissions() as $perm)
 			self::$active_user_permissions[$perm->getBit()] = true;
 
@@ -61,7 +61,7 @@ class Permissions {
 	public static function getActiveUser() {
 		if(Request::getSession("dachi_authenticated", false) == false)
 			return false;
-		
+
 		return Database::getRepository('Authentication:ModelUser')->findOneBy(array(
 			"id" => Request::getSession("dachi_authenticated", false)
 		));
@@ -91,7 +91,7 @@ class Permissions {
 
 		if(isset(self::$active_user_permissions[$bit]) && self::$active_user_permissions[$bit] === true)
 			return true;
-		
+
 		return self::fail();
 	}
 
@@ -108,7 +108,9 @@ class Permissions {
 
 	public static function fail() {
 		Request::setResponseCode("error", "Insufficent permission");
-		Template::redirect("/auth");
+
+		if(Configuration::get("authentication.redirect-on-fail", true))
+			Template::redirect(Configuration::get("authentication.redirect-to", "auth"));
 		return false;
 	}
 
@@ -129,7 +131,7 @@ class Permissions {
 
 		if($newPermission == true)
 			Database::persist($permission);
-		
+
 		Database::flush();
 	}
 }
