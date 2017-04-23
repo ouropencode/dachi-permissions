@@ -108,9 +108,12 @@ class Permissions {
 
 	public static function fail() {
 		Request::setResponseCode("error", "Insufficent permission");
+		if(Request::isAjax() || Request::isAPI())
+			return false;
 
 		if(Configuration::get("authentication.redirect-on-fail", true))
 			Template::redirect(Configuration::get("authentication.redirect-to", "auth"));
+			
 		return false;
 	}
 
