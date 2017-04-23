@@ -58,8 +58,7 @@ class ControllerLogin extends Controller {
 		session_destroy();
 		session_regenerate_id(true);
 
-		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
-		Template::display("@Authentication/login", "page_content");
+		Template::redirect("/auth");
 	}
 
 	/**

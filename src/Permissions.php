@@ -112,10 +112,10 @@ class Permissions {
 			return false;
 
 		if(Configuration::get("authentication.redirect-on-fail", true)) {
-			$destination = Configuration::get("authentication.redirect-to", "auth");
+			$destination = Configuration::get("authentication.redirect-to", "/auth");
 
 			if(!self::getActiveUser())
-				$destination = "auth";
+				$destination = "/auth";
 
 			Template::redirect($destination);
 		}
