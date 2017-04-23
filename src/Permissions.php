@@ -111,9 +111,15 @@ class Permissions {
 		if(Request::isAjax() || Request::isAPI())
 			return false;
 
-		if(Configuration::get("authentication.redirect-on-fail", true))
-			Template::redirect(Configuration::get("authentication.redirect-to", "auth"));
+		if(Configuration::get("authentication.redirect-on-fail", true)) {
+			$destination = Configuration::get("authentication.redirect-to", "auth");
 			
+			if(!self::getActiveUser())
+				$destination = "auth";
+
+			Template::redirect($destination;
+		}
+
 		return false;
 	}
 
