@@ -83,6 +83,10 @@ class ModelUser extends Model {
 		$this->last_name = $last_name;
 	}
 
+	public function getFullName() {
+		return $this->getFirstName() . " " . $this->getLastName();
+	}
+
 	public function getUsername() {
 		return $this->username;
 	}
