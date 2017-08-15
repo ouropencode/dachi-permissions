@@ -1,11 +1,9 @@
 <div class="authentication">
 
-	<a href="http://{{ domain }}" class="logo"><img src="{{ assetsURL }}/static/images/logo.png"></a>
+	<a href="//{{ domain }}" class="logo"><img src="{{ logoURL }}"></a>
 
 	<form action='auth/login/check' method='post' class='ajax'>
 		<h1>Login</h1>
-
-		{% if version_string %}<small>{{ version_string | raw }}</small>{% endif %}
 
 		{% if auth_id == "email" %}
 			<label for="email">email</label>

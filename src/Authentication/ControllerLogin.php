@@ -75,7 +75,7 @@ class ControllerLogin extends Controller {
 
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Request::setData("register_enabled", Configuration::get("authentication.register-enabled", true));
-		Request::setData("version_string", "<b>env:</b> " . Kernel::getEnvironment() . " - <b>src:</b> git-" . Kernel::getGitHash() . " - <b>dachi:</b> " . Kernel::getVersion(true));
+		
 		Template::display("@Authentication/login", "page_content");
 	}
 
