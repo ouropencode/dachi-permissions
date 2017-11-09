@@ -65,8 +65,10 @@ class ControllerPasswordReset extends Controller {
 			));
 		}
 
-		Request::setResponseCode("success", "Reset link has been sent via email");
+		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
+		Request::setData("register_enabled", Configuration::get("authentication.register-enabled", true));
 		Template::display("@Authentication/login", "page_content");
+		Request::setResponseCode("success", "Reset link has been sent via email");
 	}
 
 	/**
