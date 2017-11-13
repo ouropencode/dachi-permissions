@@ -107,7 +107,7 @@ class Permissions {
 	}
 
 	public static function fail($bit = "unknown") {
-		Request::setResponseCode("error", "Insufficent permission");
+		Request::setResponseCode("error", "Insufficient Permission");
 		Request::setData("failed-permission-bit", $bit);
 
 		if(Request::isAPI())
