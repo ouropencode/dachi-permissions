@@ -92,7 +92,7 @@ class Permissions {
 		if(isset(self::$active_user_permissions[$bit]) && self::$active_user_permissions[$bit] === true)
 			return true;
 
-		return self::fail();
+		return self::fail($bit);
 	}
 
 	public static function enforceUser($bit, $user) {
@@ -103,11 +103,13 @@ class Permissions {
 		if(isset($permissions[$bit]) && $permissions[$bit] == true)
 			return true;
 
-		return self::fail();
+		return self::fail($bit);
 	}
 
-	public static function fail() {
+	public static function fail($bit = "unknown") {
 		Request::setResponseCode("error", "Insufficent permission");
+		Request::setData("failed-permission-bit", $bit);
+
 		if(Request::isAPI())
 			return false;
 
