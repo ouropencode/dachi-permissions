@@ -42,10 +42,7 @@ class ControllerPasswordReset extends Controller {
 			"email" => Request::getArgument("email")
 		));
 
-		if($user) {
-			if(!$user->getEmail())
-				throw new \Exception("Can't reset password of user with no email");
-
+		if($user && $user->getEmail()) {
 			$key = hash('sha256', mt_rand() * time());
 			$user->setResetKey(password_hash($key, PASSWORD_BCRYPT));
 			Database::flush();
