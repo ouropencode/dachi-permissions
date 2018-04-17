@@ -80,7 +80,6 @@ class ControllerPasswordReset extends Controller {
 
 	/**
 	 * @route-url /auth/reset-password/:id/save
-	 * @route-render /auth/reset-password/:id
 	 */
 	public function auth_reset_password_claim_save() {
 		$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
@@ -96,10 +95,8 @@ class ControllerPasswordReset extends Controller {
 		Database::flush();
 
 		Request::setSession("dachi_authenticated", $user->getId());
-		ControllerLogin::perform_redirect();
-
 		Request::setResponseCode("success", "Password updated");
-		Template::redirect("/auth");
+		ControllerLogin::perform_redirect();
 	}
 
 }
