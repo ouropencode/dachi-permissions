@@ -95,7 +95,7 @@ class ControllerPasswordReset extends Controller {
 		$user->setResetKey(null);
 		Database::flush();
 
-		Request::setSesssion("dachi_authenticated", $user->getId());
+		Request::setSession("dachi_authenticated", $user->getId());
 		ControllerLogin::perform_redirect();
 
 		Request::setResponseCode("success", "Password updated");
