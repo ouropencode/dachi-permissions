@@ -74,6 +74,7 @@ class ControllerPasswordReset extends Controller {
 	public function auth_reset_password_claim() {
 		Request::setSession("dachi_authenticated", false);
 		Request::setData("reset_key", Request::getUri("id", "[0-9a-fA-F]+"));
+		Request::setData("email", Request::getArgument("email", ""));
 		Template::display("@Authentication/reset-password-new-password", "page_content");
 	}
 
@@ -93,6 +94,9 @@ class ControllerPasswordReset extends Controller {
 		$user->setPassword(password_hash(Request::getArgument("password"), PASSWORD_BCRYPT));
 		$user->setResetKey(null);
 		Database::flush();
+
+		Request::setSesssion("dachi_authenticated", $user->getId());
+		ControllerLogin::perform_redirect();
 
 		Request::setResponseCode("success", "Password updated");
 		Template::redirect("/auth");

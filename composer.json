@@ -1,6 +1,6 @@
 {
 	"name": "ouropencode/dachi-permissions",
-	"version": "3.1.25",
+	"version": "3.1.26",
 	"autoload": {
 		"psr-4": {
 			"Dachi\\Permissions\\": "src/"

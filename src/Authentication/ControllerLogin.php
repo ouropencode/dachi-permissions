@@ -75,7 +75,7 @@ class ControllerLogin extends Controller {
 
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Request::setData("register_enabled", Configuration::get("authentication.register-enabled", true));
-		
+
 		Template::display("@Authentication/login", "page_content");
 	}
 
@@ -115,7 +115,7 @@ class ControllerLogin extends Controller {
 		}
 
 		if(Request::getSession("dachi_authenticated", false) !== false)
-			return $this->perform_redirect();
+			return self::perform_redirect();
 
 		if ($user && password_verify(Request::getArgument("password"), $user->getPassword())) {
 			Request::setSession("dachi_authenticated", $user->getId());
@@ -123,7 +123,7 @@ class ControllerLogin extends Controller {
 			$user->setLastLogin(new \DateTime());
 			Database::flush();
 
-			$this->perform_redirect();
+			self::perform_redirect();
 
 			Request::setResponseCode("success", "Logged in successfully.");
 		} else {
@@ -135,7 +135,7 @@ class ControllerLogin extends Controller {
 		}
 	}
 
-	private function perform_redirect() {
+	public static function perform_redirect() {
 		$sso_redirect = null;
 		$sso_redirect = Request::getSession("sso_redirect_uri", $sso_redirect);
 		$sso_redirect = Request::getArgument("sso_redirect_uri", $sso_redirect);

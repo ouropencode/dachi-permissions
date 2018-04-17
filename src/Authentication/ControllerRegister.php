@@ -120,16 +120,10 @@ class ControllerRegister extends Controller {
 			));
 		}
 
-		Request::setSession("dachi_authenticated", $user->getId());
-		$this->perform_redirect();
+		Request::setSesssion("dachi_authenticated", $user->getId());
+		ControllerLogin::perform_redirect();
 
 		Request::setResponseCode("success", "Account created successfully");
 	}
 
-	private function perform_redirect() {
-		$redirect = "/";
-		$redirect = Request::getSession("dachi_redirect_uri", $redirect);
-		$redirect = Request::getArgument("dachi_redirect_uri", $redirect);
-		Template::redirect($redirect);
-	}
 }
