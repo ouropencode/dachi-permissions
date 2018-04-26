@@ -27,7 +27,7 @@ use Dachi\Permissions\Permissions;
 class ControllerLogin extends Controller {
 
 	public function __setup() {
-		\Dachi\Permissions\Permissions::register("global.root-user",  "Global -> Root User",  "This user is a global root user. This should only be assigned to developers. [DANGEROUS]");
+		Permissions::register("global.root-user",  "Is Root User",  "Enables functionality useful to developers and system administrators.", array("System Administration"), Permissions::LEVEL_HIDDEN);
 	}
 
 	private function handle_redirect_uris() {

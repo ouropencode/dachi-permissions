@@ -17,6 +17,11 @@ use Dachi\Core\Configuration;
 class Permissions {
 	protected static $active_user_permissions = null;
 
+	const LEVEL_DEFAULT   = 0;
+	const LEVEL_UNSAFE    = 1;
+	const LEVEL_DANGEROUS = 2;
+	const LEVEL_HIDDEN    = 3;
+
 	public static function load() {
 		if(is_array(self::$active_user_permissions))
 			return false;
@@ -130,24 +135,20 @@ class Permissions {
 		return false;
 	}
 
-	public static function register($bit, $name = null, $description = null) {
-		$permission = Database::getRepository('Authentication:ModelPermission')->findOneBy(array(
-			"bit" => $bit
-		));
-
-		$newPermission = false;
-		if(!$permission) {
-			$newPermission = true;
+	public static function register($bit, $name = null, $description = null, $display_path = array(), $safety_level = Permissions::LEVEL_HIDDEN) {
+		$permission = Database::getRepository('Authentication:ModelPermission')->findOneByBit($bit);
+		if($permission == null) {
 			$permission = new Authentication\ModelPermission();
+			Database::persist($permission);
 		}
 
 		$permission->setBit($bit);
 		$permission->setName($name == null ? $bit : $name);
 		$permission->setDescription($description == null ? $bit : $description);
-
-		if($newPermission == true)
-			Database::persist($permission);
+		$permission->setDisplayPath($display_path);
+		$permission->setSafetyLevel($safety_level);
 
 		Database::flush();
 	}
+
 }

@@ -23,9 +23,19 @@ class ModelPermission extends Model {
 	protected $name;
 
 	/**
-	 * @Column(type="string")
+	 * @Column(type="text")
 	 */
 	protected $description;
+
+	/**
+	 * @Column(type="string")
+	 */
+	protected $display_path;
+
+	/**
+	 * @Column(type="integer")
+	 */
+	protected $safety_level;
 
 	public function getBit() {
 		return $this->bit;
@@ -49,6 +59,22 @@ class ModelPermission extends Model {
 
 	public function setDescription($description) {
 		$this->description = $description;
+	}
+
+	public function getDisplayPath() {
+		return json_decode($this->display_path);
+	}
+
+	public function setDisplayPath($display_path) {
+		$this->display_path = json_encode($display_path);
+	}
+
+	public function getSafetyLevel() {
+		return $this->$safety_level;
+	}
+
+	public function setSafetyLevel($safety_level) {
+		$this->$safety_level = $safety_level;
 	}
 
 }
