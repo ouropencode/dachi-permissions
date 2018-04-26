@@ -139,6 +139,7 @@ class Permissions {
 		$permission = Database::getRepository('Authentication:ModelPermission')->findOneByBit($bit);
 		if($permission == null) {
 			$permission = new Authentication\ModelPermission();
+			$permission->setBit($bit);
 			Database::persist($permission);
 		}
 
