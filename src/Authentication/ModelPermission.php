@@ -74,7 +74,7 @@ class ModelPermission extends Model {
 	}
 
 	public function setSafetyLevel($safety_level) {
-		$this->$safety_level = $safety_level;
+		$this->safety_level = $safety_level;
 	}
 
 }

@@ -135,7 +135,7 @@ class Permissions {
 		return false;
 	}
 
-	public static function register($bit, $name = null, $description = null, $display_path = array(), $safety_level = Permissions::LEVEL_HIDDEN) {
+	public static function register($bit, $name = null, $description = null, $display_path = array(), $safety_level = null) {
 		$permission = Database::getRepository('Authentication:ModelPermission')->findOneByBit($bit);
 		if($permission == null) {
 			$permission = new Authentication\ModelPermission();
@@ -147,7 +147,7 @@ class Permissions {
 		$permission->setName($name == null ? $bit : $name);
 		$permission->setDescription($description == null ? $bit : $description);
 		$permission->setDisplayPath($display_path);
-		$permission->setSafetyLevel($safety_level);
+		$permission->setSafetyLevel($safety_level === null ? Permissions::LEVEL_HIDDEN : $safety_level);
 
 		Database::flush();
 	}
