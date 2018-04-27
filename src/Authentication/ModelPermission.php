@@ -28,7 +28,7 @@ class ModelPermission extends Model {
 	protected $description;
 
 	/**
-	 * @Column(type="string")
+	 * @Column(type="text")
 	 */
 	protected $display_path;
 
@@ -36,6 +36,11 @@ class ModelPermission extends Model {
 	 * @Column(type="integer")
 	 */
 	protected $safety_level;
+
+	/**
+	 * @Column(type="integer")
+	 */
+	protected $priority;
 
 	public function getBit() {
 		return $this->bit;
@@ -75,6 +80,14 @@ class ModelPermission extends Model {
 
 	public function setSafetyLevel($safety_level) {
 		$this->safety_level = $safety_level;
+	}
+
+	public function getPriority() {
+		return $this->priority;
+	}
+
+	public function setPriority($priority) {
+		$this->priority = $priority;
 	}
 
 }
