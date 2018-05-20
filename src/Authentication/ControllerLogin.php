@@ -42,6 +42,7 @@ class ControllerLogin extends Controller {
 
 	/**
 	 * @route-url /auth/
+	 * @session
 	 */
 	public function auth_index() {
 		$this->handle_redirect_uris();
@@ -50,6 +51,7 @@ class ControllerLogin extends Controller {
 
 	/**
 	 * @route-url /auth/logout
+	 * @session
 	 */
 	public function auth_logout() {
 		$this->handle_redirect_uris();
@@ -63,6 +65,7 @@ class ControllerLogin extends Controller {
 
 	/**
 	 * @route-url /auth/login
+	 * @session
 	 */
 	public function auth_login() {
 		$this->handle_redirect_uris();
@@ -82,6 +85,7 @@ class ControllerLogin extends Controller {
 	/**
 	 * @route-url /auth/login/check
 	 * @route-render /auth/login
+	 * @session
 	 */
 	public function auth_login_check() {
 		$loginLockout  = Request::getSession("dachi_login_lockout_till", false);

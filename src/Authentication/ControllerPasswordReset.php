@@ -26,6 +26,7 @@ class ControllerPasswordReset extends Controller {
 
 	/**
 	 * @route-url /auth/reset-password
+	 * @session
 	 */
 	public function auth_reset_password() {
 		Request::setSession("dachi_authenticated", false);
@@ -36,6 +37,7 @@ class ControllerPasswordReset extends Controller {
 	/**
 	 * @route-url /auth/reset-password/send
 	 * @route-render /auth/login
+	 * @session
 	 */
 	public function auth_reset_password_send() {
 		$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
@@ -70,6 +72,7 @@ class ControllerPasswordReset extends Controller {
 
 	/**
 	 * @route-url /auth/reset-password/:id
+	 * @session
 	 */
 	public function auth_reset_password_claim() {
 		Request::setSession("dachi_authenticated", false);
@@ -80,6 +83,7 @@ class ControllerPasswordReset extends Controller {
 
 	/**
 	 * @route-url /auth/reset-password/:id/save
+	 * @session
 	 */
 	public function auth_reset_password_claim_save() {
 		$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(

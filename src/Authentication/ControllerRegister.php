@@ -36,6 +36,7 @@ class ControllerRegister extends Controller {
 
 	/**
 	 * @route-url /auth/register
+	 * @session
 	 */
 	public function auth_register() {
 		$this->handle_redirect_uris();
@@ -55,6 +56,7 @@ class ControllerRegister extends Controller {
 	/**
 	 * @route-url /auth/register/create
 	 * @route-render /auth/login
+	 * @session
 	 */
 	public function auth_register_create() {
 		if(Configuration::get("authentication.register-enabled", true) == false)
