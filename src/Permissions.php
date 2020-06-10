@@ -16,6 +16,7 @@ use Dachi\Core\Configuration;
  */
 class Permissions {
 	protected static $active_user_permissions = null;
+  protected static $password_policy_handler = null;
 
 	const LEVEL_DEFAULT   = 0;
 	const LEVEL_UNSAFE    = 1;
@@ -152,5 +153,16 @@ class Permissions {
 
 		Database::flush();
 	}
+
+  public static function setPasswordPolicy($handler) {
+    self::$password_policy_handler = $handler;
+  }
+
+  public static function checkPasswordPolicyErrors($password) {
+    if(!is_callable(self::$password_policy_handler))
+      return true;
+
+    return call_user_func(self::$password_policy_handler, $password);
+  }
 
 }

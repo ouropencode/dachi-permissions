@@ -94,7 +94,13 @@ class ControllerPasswordReset extends Controller {
 		if(!$user || !$reset_key || !password_verify($reset_key, $user->getResetKey()))
 			return Request::setResponseCode("error", "Invalid email or reset key provided");
 
-		$user->setPassword(password_hash(Request::getArgument("password"), PASSWORD_BCRYPT));
+    $password = Request::getArgument("password");
+
+    $policy = \Dachi\Permissions\Permissions::checkPasswordPolicyErrors($password);
+    if($policy != null && $policy != false)
+      return Request::setResponseCode("error", "Password fails policy:<br>" . implode("\n", $policy));
+
+		$user->setPassword(password_hash($password, PASSWORD_BCRYPT));
 		$user->setResetKey(null);
 		Database::flush();
 
