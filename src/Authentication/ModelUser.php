@@ -63,6 +63,16 @@ class ModelUser extends Model {
      */
     protected $reset_key;
 
+    /**
+     * @Column(type="integer")
+     */
+    protected $lockout_count;
+
+    /**
+     * @Column(type="datetime", nullable=true)
+     */
+    protected $lockout_until;
+
 	public function getId() {
 		return $this->id;
 	}
@@ -141,6 +151,22 @@ class ModelUser extends Model {
 
 	public function getResetKey() {
 		return $this->reset_key;
+	}
+
+	public function setLockoutCount($value) {
+		$this->lockout_count = $value;
+	}
+
+	public function getLockoutCount() {
+		return $this->lockout_count;
+	}
+
+	public function setLockoutUntil($valule) {
+		$this->lockout_until = $valule;
+	}
+
+	public function getLockoutUntil() {
+		return $this->lockout_until;
 	}
 
 }

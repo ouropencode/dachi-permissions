@@ -71,11 +71,6 @@ class ControllerLogin extends Controller {
 		$this->handle_redirect_uris();
 		Request::setSession("dachi_authenticated", false);
 
-		$loginLockout  = Request::getSession("dachi_login_lockout_till", false);
-
-		if ($loginLockout !== false && $loginLockout < time())
-			throw new InvalidAttemptsLockoutException();
-
 		Request::setData("auth_id", Configuration::get("authentication.identifier", "email"));
 		Request::setData("register_enabled", Configuration::get("authentication.register-enabled", true));
 
@@ -88,14 +83,6 @@ class ControllerLogin extends Controller {
 	 * @session
 	 */
 	public function auth_login_check() {
-		$loginLockout  = Request::getSession("dachi_login_lockout_till", false);
-
-		if ($loginLockout !== false && $loginLockout < time())
-			throw new InvalidAttemptsLockoutException();
-
-		$loginAttempts = Request::getSession("dachi_login_attempts", 0) + 1;
-		Request::setSession("dachi_login_attempts", $loginAttempts);
-
 		$identifier = Configuration::get("authentication.identifier", "email");
 		if($identifier == "email") {
 			$user = Database::getRepository('Authentication:ModelUser')->findOneBy(array(
@@ -121,22 +108,40 @@ class ControllerLogin extends Controller {
 		if(Request::getSession("dachi_authenticated", false) !== false)
 			return self::perform_redirect();
 
-		if ($user && password_verify(Request::getArgument("password"), $user->getPassword())) {
+    if(!$user) {
+      Request::setResponseCode("error", "Invalid credentials.");
+      return;
+    }
+
+    if($user->getLockoutUntil() && $user->getLockoutUntil() > new \DateTime()) {
+      Request::setData("login_lockout", true);
+      Request::setResponseCode("error", "Account locked out.<br><small>Too many login attempts, try again later.</small>");
+      return;
+    }
+
+    $user->setLockoutCount($user->getLockoutCount() + 1);
+
+		if (password_verify(Request::getArgument("password"), $user->getPassword())) {
 			Request::setSession("dachi_authenticated", $user->getId());
 
 			$user->setLastLogin(new \DateTime());
+      $user->setLockoutCount(0);
+      $user->setLockoutUntil(null);
 			Database::flush();
 
 			self::perform_redirect();
 
 			Request::setResponseCode("success", "Logged in successfully.");
 		} else {
-			if ($loginAttempts > 15) {
-				Request::setSession("dachi_login_lockout_till", time() + ($loginAttempts * 60));
-				throw new InvalidAttemptsLockoutException();
+			if ($user->getLockoutCount() > 5) {
+        $until = new \DateTime();
+        $until->add(new \DateInterval(sprintf("PT%dM", $user->getLockoutCount())));
+        $user->setLockoutUntil($until);
 			}
 			Request::setResponseCode("error", "Invalid credentials.");
 		}
+
+    Database::flush();
 	}
 
 	public static function perform_redirect() {

@@ -104,6 +104,8 @@ class ControllerRegister extends Controller {
 		$user->setCreated(new \DateTime());
 		$user->setLastLogin(new \DateTime());
 		$user->setResetKey(null);
+    $user->setLockoutCount(0);
+    $user->setLockoutUntil(null);
 		Database::persist($user);
 		Database::flush();
 
