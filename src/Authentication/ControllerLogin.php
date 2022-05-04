@@ -58,7 +58,6 @@ class ControllerLogin extends Controller {
 		Request::setSession("dachi_authenticated", false);
 
 		session_destroy();
-		session_regenerate_id(true);
 
 		Template::redirect("/auth");
 	}
